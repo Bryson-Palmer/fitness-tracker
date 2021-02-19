@@ -12,6 +12,7 @@ const API = {
   },
   async addExercise(data) {
     const id = location.search.split("=")[1];
+    console.log("Id is: " + id);
 
     const res = await fetch("/api/workouts/" + id, {
       method: "PUT",
