@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 require("./models");
 
+// define ports
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // connection to mongoose
-mongoose.connect(process.env.MONGOD_URI || "mongod://localhost/workout", 
+mongoose.connect(process.env.MONGODB_URI || "mongod://localhost/workout", 
 { 
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -32,6 +33,7 @@ mongoose.connect(process.env.MONGOD_URI || "mongod://localhost/workout",
 app.use(require("./routes/htmlRoutes"));
 app.use(require("./routes/apiRoutes"));
 
+// listen to port
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);
 });
