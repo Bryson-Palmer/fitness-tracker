@@ -3,65 +3,67 @@ const router = require("express").Router();
 const { Workout } = require("../models");
 
 // Get all workouts
-router.get("/api/workouts", ( req, res ) => {
+router.get("/api/workouts", (req, res) => {
 
-    Workout.find({})
-        .then( workouts => {
-            res.json( workouts );
+    Workout.find()
+        .then( (workoutsDb) => {
+            res.json(workoutsDb);
         })
-        .catch( err => {
-            res.status( 500 ).json( err );
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+            
         });
 
 });
 
 // Create a new workout
-router.post("/api/workouts", ( req, res ) => {
-
-    Workout.create( req.body )
-        .then( createWorkout => {
-            res.json( createWorkout );
+router.post("/api/workouts", (req, res) => {
+    
+    Workout.create(req.body)
+        .then( (workoutsDb) => {
+            res.json(workoutsDb);
         })
-        .catch( err => {
-            res.status( 500 ).json( err );
+        .catch(err => {
+            res.status(500).json(err);
         });
 
 });
 
 // Update the array of workouts by id
-router.put("/api/workouts/:id", ( req, res ) => {
+router.put("/api/workouts/:id", (req, res) => {
 
-    const newExercise = req.body;
-
+    // const updateWorkout = req.body;
+    // console.log(updateWorkout);
     Workout.findByIdAndUpdate(
+        req.params.id,
         {
-            _id: req.params.id
-        }, { 
             $push: {
-                exercises: newExercise
-        }
-    }, {
-        new: true
-    })
-    .then( addExercise => {
-        res.json( addExercise );
-    })
-    .catch( err => {
-        res.status( 500 ).json( err );
-    });
+                exercises: req.body,
+            }
+        }, {
+        new: true,
+        runValidators: true
+    }).then( (workoutsDb) => {
+            res.json(workoutsDb);
+            console.log(workoutsDb);
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
 
 });
 
 // Get worouts in range
-router.get("/api/workouts/range", ( req, res ) => {
+router.get("/api/workouts/range", (req, res) => {
 
     Workout.find({})
         .limit(7)
-        .then( workoutRange => {
-            res.json( workoutRange );
+        .then( (workoutsDb) => {
+            res.json(workoutsDb);
         })
-        .catch( err => {
-            res.status( 500 ).json( err );
+        .catch(err => {
+            res.status(500).json(err);
         });
 });
 

@@ -8,6 +8,7 @@ require("./models");
 // define ports
 const PORT = process.env.PORT || 3000;
 
+// define app
 const app = express();
 
 // install and use the morgan logger
@@ -21,13 +22,16 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // connection to mongoose
-mongoose.connect(process.env.MONGODB_URI || "mongod://localhost/workout", 
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", 
 { 
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
-});
+    useFindAndModify: false,
+})
+.then( () => console.log("Connected To MongoDB."))
+.catch( err => console.log( err ));
+
 
 // routes
 app.use(require("./routes/htmlRoutes"));
