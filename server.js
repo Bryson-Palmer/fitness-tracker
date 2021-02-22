@@ -3,6 +3,8 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
+require("dotenv").config();
+
 require("./models");
 
 // define ports
