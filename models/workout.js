@@ -35,6 +35,7 @@ const workoutSchema = new Schema({
     toJSON: { virtuals: true }
 });
 
+// virtual attribute to tally total duration for each exercise in a group
 workoutSchema.virtual("totalDuration").get(function () {
     let totalDuration = 0;
     this.exercises.forEach(function (exercise) {
