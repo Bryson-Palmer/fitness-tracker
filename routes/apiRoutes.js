@@ -6,22 +6,22 @@ const { Workout } = require("../models");
 router.get("/api/workouts", (req, res) => {
 
     Workout.find()
-        .then( (workoutsDb) => {
+        .then((workoutsDb) => {
             res.json(workoutsDb);
         })
         .catch(err => {
             console.log(err);
             res.status(500).json(err);
-            
+
         });
 
 });
 
 // Create a new workout
 router.post("/api/workouts", (req, res) => {
-    
+
     Workout.create(req.body)
-        .then( (workoutsDb) => {
+        .then((workoutsDb) => {
             res.json(workoutsDb);
         })
         .catch(err => {
@@ -44,10 +44,10 @@ router.put("/api/workouts/:id", (req, res) => {
         }, {
         new: true,
         runValidators: true
-    }).then( (workoutsDb) => {
-            res.json(workoutsDb);
-            console.log(workoutsDb);
-        })
+    }).then((workoutsDb) => {
+        res.json(workoutsDb);
+        console.log(workoutsDb);
+    })
         .catch(err => {
             res.status(500).json(err);
         });
@@ -59,7 +59,7 @@ router.get("/api/workouts/range", (req, res) => {
 
     Workout.find({})
         .limit(7)
-        .then( (workoutsDb) => {
+        .then((workoutsDb) => {
             res.json(workoutsDb);
         })
         .catch(err => {
