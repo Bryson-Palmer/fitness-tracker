@@ -23,6 +23,11 @@ nav {
   padding: 10px;
   line-height: 3;
   font-size: 1.2rem;
+  font-weight: bold;
+}
+
+nav a {
+  margin-right: 1rem;
 }
 
 a,
@@ -138,7 +143,7 @@ form::after {
 }
 
 .exercise .ui.card {
-  width: 400px;
+  width: 100%;
   max-width: 600px;
 }
 
