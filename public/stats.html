@@ -13,12 +13,14 @@
     <link rel="stylesheet" href="style.css" />
     <title>Fitness Chart</title>
   </head>
-  <nav>
+  <nav class="d-flex justify-content-between">
     <a href="/">Fitness Tracker</a>
+    <div class="todaysDate text-center"></div>
   </nav>
   <body>
     <div class="container mt">
       <h1 class="text-center">Workout Dashboard</h1>
+      <p class="text-center">For the last 7 days</p>
       <div class="row mt">
         <div class="col-md-6">
           <canvas id="canvas"></canvas>

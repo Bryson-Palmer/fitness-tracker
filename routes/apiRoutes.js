@@ -33,8 +33,6 @@ router.post("/api/workouts", (req, res) => {
 // Update the array of workouts by id
 router.put("/api/workouts/:id", (req, res) => {
 
-    // const updateWorkout = req.body;
-    // console.log(updateWorkout);
     Workout.findByIdAndUpdate(
         req.params.id,
         {
@@ -58,6 +56,7 @@ router.put("/api/workouts/:id", (req, res) => {
 router.get("/api/workouts/range", (req, res) => {
 
     Workout.find({})
+        .sort({date: -1})
         .limit(7)
         .then((workoutsDb) => {
             res.json(workoutsDb);

@@ -2,42 +2,67 @@
 
 fetch("/api/workouts/range")
   .then(response => {
+    
     return response.json();
   })
   .then(data => {
+    data.sort( (a, b) => {return a.day - b.day});
     populateChart(data);
+    
+    const dateEl = document.querySelector(".todaysDate");
+    const p = document.createElement("p");
+    let currentDate= (new Date().toDateString("en-US"));
+    p.textContent = currentDate;
+    dateEl.appendChild(p);
+
   });
 
 
-API.getWorkoutsInRange()
+  API.getWorkoutsInRange()
 
   function generatePalette() {
     const arr = [
-    "#003f5c",
-    "#2f4b7c",
-    "#665191",
-    "#a05195",
-    "#d45087",
-    "#f95d6a",
-    "#ff7c43",
-    "ffa600",
-    "#003f5c",
-    "#2f4b7c",
-    "#665191",
-    "#a05195",
-    "#d45087",
-    "#f95d6a",
-    "#ff7c43",
-    "ffa600"
-  ]
+      "#003f5c",
+      "#2f4b7c",
+      "#665191",
+      "#a05195",
+      "#d45087",
+      "#f95d6a",
+      "#ff7c43",
+      "ffa600",
+      "#003f5c",
+      "#2f4b7c",
+      "#665191",
+      "#a05195",
+      "#d45087",
+      "#f95d6a",
+      "#ff7c43",
+      "ffa600"
+    ]
 
-  return arr;
-  }
+    return arr;
+}
+
 function populateChart(data) {
   let durations = duration(data);
   let pounds = calculateTotalWeight(data);
   let workouts = workoutNames(data);
   const colors = generatePalette();
+
+  let exercisesWithPounds = [];
+  
+  for ( let i = 0; i < data.length; i++ ) {
+    for ( let j = 0; j< data[i].exercises.length; j++ ) {
+      
+      if ( data[i].exercises[j].weight ) {
+        exercisesWithPounds.push( data[i].exercises[j].name );
+      }
+    }
+  }
+  console.log("exercisesWithPounds", exercisesWithPounds);
+  console.log("durations:", durations);
+  console.log("Pounds:", pounds);
+  console.log("Workouts", workouts);
 
   let line = document.querySelector("#canvas").getContext("2d");
   let bar = document.querySelector("#canvas2").getContext("2d");
@@ -86,6 +111,9 @@ function populateChart(data) {
             display: true,
             scaleLabel: {
               display: true
+            },
+            ticks: {
+              beginAtZero: true
             }
           }
         ]
@@ -161,7 +189,7 @@ function populateChart(data) {
     options: {
       title: {
         display: true,
-        text: "Excercises Performed"
+        text: "Duration of Excercises"
       }
     }
   });
@@ -169,7 +197,7 @@ function populateChart(data) {
   let donutChart = new Chart(pie2, {
     type: "doughnut",
     data: {
-      labels: workouts,
+      labels: exercisesWithPounds,
       datasets: [
         {
           label: "Excercises Performed",
@@ -181,7 +209,7 @@ function populateChart(data) {
     options: {
       title: {
         display: true,
-        text: "Excercises Performed"
+        text: "Excercises with Weights"
       }
     }
   });
@@ -189,7 +217,7 @@ function populateChart(data) {
 
 function duration(data) {
   let durations = [];
-
+  
   data.forEach(workout => {
     workout.exercises.forEach(exercise => {
       durations.push(exercise.duration);
@@ -201,13 +229,16 @@ function duration(data) {
 
 function calculateTotalWeight(data) {
   let total = [];
-
+  console.log("data", data);
   data.forEach(workout => {
     workout.exercises.forEach(exercise => {
-      total.push(exercise.weight);
+      if (exercise.weight) {
+        total.push(exercise.weight);
+      } else {
+        total.push(0);
+      }
     });
   });
-
   return total;
 }
 
@@ -219,6 +250,6 @@ function workoutNames(data) {
       workouts.push(exercise.name);
     });
   });
-  
+
   return workouts;
 }
