@@ -10,8 +10,11 @@ async function initWorkout() {
       date: formatDate(lastWorkout.date),
       totalDuration: lastWorkout.totalDuration,
       numExercises: lastWorkout.exercises.length,
-      ...tallyExercises(lastWorkout.exercises)
+      ...tallyExercises(lastWorkout.exercises),
+      totalWeight: lastWorkout.totalWeight
     };
+
+    console.log("workoutSummary.date", workoutSummary.date);
 
     renderWorkoutSummary(workoutSummary);
   } else {
@@ -22,7 +25,7 @@ async function initWorkout() {
 function tallyExercises(exercises) {
   const tallied = exercises.reduce((acc, curr) => {
     if (curr.type === "resistance") {
-      acc.totalWeight = (acc.totalWeight || 0) + curr.weight;
+      acc.eachWeight = (acc.eachWeight || 0) + curr.weight;
       acc.totalSets = (acc.totalSets || 0) + curr.sets;
       acc.totalReps = (acc.totalReps || 0) + curr.reps;
     } else if (curr.type === "cardio") {
@@ -40,7 +43,8 @@ function formatDate(date) {
     month: "long",
     day: "numeric"
   };
-
+  
+  console.log("currentDate", new Date().toLocaleDateString(options));
   return new Date(date).toLocaleDateString(options);
 }
 
@@ -51,10 +55,11 @@ function renderWorkoutSummary(summary) {
     date: "Date",
     totalDuration: "Total Workout Duration",
     numExercises: "Exercises Performed",
-    totalWeight: "Total Weight Lifted",
+    eachWeight: "Each Weight Lifted",
     totalSets: "Total Sets Performed",
     totalReps: "Total Reps Performed",
-    totalDistance: "Total Distance Covered"
+    totalDistance: "Total Distance Covered",
+    totalWeight: "Total Weight Lifted"
   };
 
   Object.keys(summary).forEach(key => {

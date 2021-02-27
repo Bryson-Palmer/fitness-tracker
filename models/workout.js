@@ -51,6 +51,19 @@ workoutSchema.virtual("totalDuration").get(function () {
     return totalDuration;
 });
 
+// virtual attribute to tally total weight for each exercise in a group
+workoutSchema.virtual("totalWeight").get(function () {
+    let totalWeight = 0;
+    this.exercises.forEach(function (exercise) {
+        if (exercise.weight) {
+            totalWeight += ((exercise.reps * exercise.sets) * exercise.weight);
+        } else {
+            totalWeight += 0;
+        }
+    })
+    return totalWeight;
+});
+
 // create the model
 const Workout = mongoose.model("Workout", workoutSchema);
 

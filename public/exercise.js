@@ -32,6 +32,7 @@ async function initExercise() {
 
 initExercise();
 
+// Handle workout form change
 function handleWorkoutTypeChange(event) {
   workoutType = event.target.value;
 
