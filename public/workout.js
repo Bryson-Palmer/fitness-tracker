@@ -14,8 +14,6 @@ async function initWorkout() {
       totalWeight: lastWorkout.totalWeight
     };
 
-    console.log("workoutSummary.date", workoutSummary.date);
-
     renderWorkoutSummary(workoutSummary);
   } else {
     renderNoWorkoutText()
@@ -44,6 +42,7 @@ function formatDate(date) {
     day: "numeric"
   };
   
+  // Build and format date
   console.log("currentDate", new Date().toLocaleDateString(options));
   return new Date(date).toLocaleDateString(options);
 }
@@ -55,7 +54,7 @@ function renderWorkoutSummary(summary) {
     date: "Date",
     totalDuration: "Total Workout Duration",
     numExercises: "Exercises Performed",
-    eachWeight: "Each Weight Lifted",
+    eachWeight: "All Weights Combined",
     totalSets: "Total Sets Performed",
     totalReps: "Total Reps Performed",
     totalDistance: "Total Distance Covered",

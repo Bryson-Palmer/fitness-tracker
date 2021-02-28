@@ -14,7 +14,6 @@ let workoutSeed = [
     // setDate sets the day of the month to the date object.
     // getDate returns the day of the month (from 1 to 31)
     date: new Date(new Date().setDate(new Date().getDate() - 9)),
-    day: (new Date().getDay()-2),
     exercises: [
       {
         type: "resistance",
@@ -28,7 +27,6 @@ let workoutSeed = [
   },
   {
     date: new Date(new Date().setDate(new Date().getDate() - 8)),
-    day: (new Date().getDay()-1),
     exercises: [
       {
         type: "resistance",
@@ -42,7 +40,6 @@ let workoutSeed = [
   },
   {
     date: new Date(new Date().setDate(new Date().getDate() - 7)),
-    day: (new Date().getDay()),
     exercises: [
       {
         type: "resistance",
@@ -56,7 +53,6 @@ let workoutSeed = [
   },
   {
     date: new Date(new Date().setDate(new Date().getDate() - 6)),
-    day: (new Date().getDay()+1),
     exercises: [
       {
         type: "cardio",
@@ -68,7 +64,6 @@ let workoutSeed = [
   },
   {
     date: new Date(new Date().setDate(new Date().getDate() - 5)),
-    day: (new Date().getDay()+2),
     exercises: [
       {
         type: "resistance",
@@ -82,7 +77,6 @@ let workoutSeed = [
   },
   {
     date: new Date(new Date().setDate(new Date().getDate() - 4)),
-    day: (new Date().getDay()-4),
     exercises: [
       {
         type: "resistance",
@@ -96,7 +90,6 @@ let workoutSeed = [
   },
   {
     date: new Date(new Date().setDate(new Date().getDate() - 3)),
-    day: (new Date().getDay()-3),
     exercises: [
       {
         type: "resistance",
@@ -110,7 +103,6 @@ let workoutSeed = [
   },
   {
     date: new Date(new Date().setDate(new Date().getDate() - 2)),
-    day: (new Date().getDay()-2),
     exercises: [
       {
         type: "resistance",
@@ -124,7 +116,6 @@ let workoutSeed = [
   },
   {
     date: new Date(new Date().setDate(new Date().getDate() - 1)),
-    day: (new Date().getDay()-1),
     exercises: [
       {
         type: "resistance",

@@ -10,10 +10,8 @@ fetch("/api/workouts/range")
     console.log("data", data);
 
     // Get the last 7 days
-    let slicedData = data.slice(0, 7);
-
-    let chartData = orderByCurrentDay(slicedData);
-    console.log("chartData", chartData);
+    let chartData = data.slice(0, 7);
+    console.log("chartData", chartData.reverse());
 
     // Populate chart
     populateChart(chartData);
@@ -25,34 +23,6 @@ fetch("/api/workouts/range")
     p.textContent = currentDate;
     dateEl.appendChild(p);
     console.log("currentDate", currentDate);
-    console.log("currentDay", new Date().getDay());
-
-    // Sort array from oldest to newest
-    // chartData.sort((a, b) => {
-    //   if (a.day > b.day) return 1;
-    //   if (a.day < b.day) return -1
-    //   return 0;
-    // });
-
-    // Check for duplicatesin in an array - example
-    function noDuplicateArrayElements(arr) {
-      let sorted_arr = arr.slice().sort();
-      // console.log("sorted_arr", sorted_arr);
-      let results = [];
-      for (let i = 0; i < sorted_arr.length - 1; i++) {
-        if (sorted_arr[i + 1] === sorted_arr[i]) {
-          results.pop(sorted_arr[i]);
-          results.push(sorted_arr[i + 1]);
-        } else {
-          results.push(sorted_arr[i + 1]);
-        }
-      }
-      return results;
-    }
-
-    let colors = ["red", "orange", "blue", "green", "red", "blue"];
-    let noDuplicateColors = noDuplicateArrayElements(colors);//["blue", "green", "orange", "red"]
-    // console.log("noDuplicateColors", noDuplicateColors);
   });
 
 
@@ -88,7 +58,7 @@ function populateChart(chartData) {
   let everyDuration = allDurations(chartData);
   let strengthWorkouts = strengthWorkoutNames(chartData);
   let strengthData = allStrengthData(chartData);
-  let dynamicDayLabels = orderDayLabels();
+  let dynamicLabels = orderLabels(chartData);
   const colors = generatePalette();
 
   // Console logs for different data
@@ -98,7 +68,7 @@ function populateChart(chartData) {
   console.log("everyDuration", everyDuration);
   console.log("strengthWorkouts", strengthWorkouts);
   console.log("strengthData", strengthData);
-  console.log("dynamicDayLabels", dynamicDayLabels);
+  console.log("dynamicDayLabels", dynamicLabels);
 
   let line = document.querySelector("#canvas").getContext("2d");
   let bar = document.querySelector("#canvas2").getContext("2d");
@@ -108,7 +78,7 @@ function populateChart(chartData) {
   let lineChart = new Chart(line, {
     type: "line",
     data: {
-      labels: dynamicDayLabels,
+      labels: dynamicLabels,
       datasets: [
         {
           label: "minutes",
@@ -153,7 +123,7 @@ function populateChart(chartData) {
   let barChart = new Chart(bar, {
     type: "bar",
     data: {
-      labels: dynamicDayLabels,
+      labels: dynamicLabels,
       datasets: [
         {
           label: "pounds",
@@ -242,27 +212,27 @@ function totalDurations(chartData) {
 
   chartData.forEach(workout => {
     if (workout.totalDuration) {
-
       durations.push(workout.totalDuration);
     } else {
       durations.push(0);
     }
   });
+
   return durations;
 }
 
 // Get total weight lifter for a workout session
 function calculateTotalWeight(chartData) {
   let total = [];
+
   chartData.forEach(workout => {
-    // workout.exercises.forEach(exercise => {
     if (workout.totalWeight) {
       total.push(workout.totalWeight);
     } else {
       total.push(0);
     }
-    // });
   });
+
   return total;
 }
 
@@ -271,9 +241,13 @@ function workoutNames(chartData) {
   let workouts = [];
 
   chartData.forEach(workout => {
-    workout.exercises.forEach(exercise => {
-      workouts.push(exercise.name);
-    });
+    if (workout.exercises) {
+      workout.exercises.forEach(exercise => {
+        workouts.push(exercise.name);
+      });
+    } else {
+      workouts.push("");
+    }
   });
 
   return workouts;
@@ -284,9 +258,13 @@ function allDurations(chartData) {
   let durations = [];
 
   chartData.forEach(workout => {
-    workout.exercises.forEach(exercise => {
-      durations.push(exercise.duration);
-    });
+    if (workout.exercises) {
+      workout.exercises.forEach(exercise => {
+        durations.push(exercise.duration);
+      });
+    } else {
+      durations.push(0);
+    }
   });
 
   return durations;
@@ -304,6 +282,7 @@ function strengthWorkoutNames(chartData) {
       }
     }
   }
+
   return strengthExercises;
 }
 
@@ -319,197 +298,33 @@ function allStrengthData(chartData) {
       }
     }
   }
+
   return strengthData;
 }
 
 // Get the current day and order the 7 day labels for the charts
-function orderDayLabels() {
-  let currentDayLabels = [];
-  let currentDay = new Date().getDay();
+function orderLabels(chartData) {
+  let workoutLabels = [];
 
-  if (currentDay === 0) {
-    currentDayLabels.push(
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    )
-  }
+  chartData.forEach(workout => {
+    if (workout.exercises) {
+      if (workout.exercises.length > 1) {
+        let exerciseNames = [];
+        for (let i = 0; i < workout.exercises.length; i++) {
+          exerciseNames.push(workout.exercises[i].name);
+        }
+        workoutLabels.push(exerciseNames);
+      } else {
+        for (let j = 0; j < workout.exercises.length; j++) {
+          workoutLabels.push(workout.exercises[j].name);
+        }
+        
+      }
 
-  if (currentDay === 1) {
-    currentDayLabels.push(
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-      "Monday",
-    )
-  }
+    } else {
+      workoutLabels.push("")
+    }
+  });
 
-  if (currentDay === 2) {
-    currentDayLabels.push(
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-      "Monday",
-      "Tuesday",
-    )
-  }
-
-  if (currentDay === 3) {
-    currentDayLabels.push(
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-    )
-  }
-
-  if (currentDay === 4) {
-    currentDayLabels.push(
-      "Friday",
-      "Saturday",
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-    )
-  }
-
-  if (currentDay === 5) {
-    currentDayLabels.push(
-      "Saturday",
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-    )
-  }
-
-  if (currentDay === 6) {
-    currentDayLabels.push(
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    )
-  }
-
-  return currentDayLabels;
-}
-
-// Get the current day and order the 7 day labels for the charts
-function orderByCurrentDay(workoutData) {
-  let newOrderData = [];
-  let currentDay = new Date().getDay();
-
-  if (currentDay === 0) {
-    console.log("workoutData[0]", workoutData[0]);
-    newOrderData.push(
-      workoutData[1],
-      workoutData[2],
-      workoutData[3],
-      workoutData[4],
-      workoutData[5],
-      workoutData[6],
-      workoutData[0],
-    )
-  }
-
-  if (currentDay === 1) {
-    console.log("workoutData[0]", workoutData[0]);
-    newOrderData.push(
-      workoutData[2],
-      workoutData[3],
-      workoutData[4],
-      workoutData[5],
-      workoutData[6],
-      workoutData[0],
-      workoutData[1],
-    )
-  }
-
-  if (currentDay === 2) {
-    console.log("workoutData[0]", workoutData[0]);
-    newOrderData.push(
-      workoutData[3],
-      workoutData[4],
-      workoutData[5],
-      workoutData[6],
-      workoutData[0],
-      workoutData[1],
-      workoutData[2],
-    )
-  }
-
-  if (currentDay === 3) {
-    console.log("workoutData[0]", workoutData[0]);
-    newOrderData.push(
-      workoutData[4],
-      workoutData[5],
-      workoutData[6],
-      workoutData[0],
-      workoutData[1],
-      workoutData[2],
-      workoutData[3],
-    )
-  }
-
-  if (currentDay === 4) {
-    console.log("workoutData[0]", workoutData[0]);
-    newOrderData.push(
-      workoutData[5],
-      workoutData[6],
-      workoutData[0],
-      workoutData[1],
-      workoutData[2],
-      workoutData[3],
-      workoutData[4],
-    )
-  }
-
-  if (currentDay === 5) {
-    console.log("workoutData[0]", workoutData[0]);
-    newOrderData.push(
-      workoutData[6],
-      workoutData[5],
-      workoutData[4],
-      workoutData[3],
-      workoutData[2],
-      workoutData[1],
-      workoutData[0],
-    )
-  }
-
-  if (currentDay === 6) {
-    console.log("workoutData[0]", workoutData[0]);
-    newOrderData.push(
-      workoutData[0],
-      workoutData[1],
-      workoutData[2],
-      workoutData[3],
-      workoutData[4],
-      workoutData[5],
-      workoutData[6],
-    )
-  }
-
-
-  return newOrderData;
+  return workoutLabels;
 }

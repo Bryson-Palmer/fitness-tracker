@@ -5,16 +5,7 @@ const Schema = mongoose.Schema;
 const workoutSchema = new Schema({
     date: {
         type: Date,
-        default: new Date().toLocaleDateString({
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        })
-    },
-    day: {
-      type: Number,
-      default: new Date().getDay()
+        default: new Date().toDateString("en-US")
     },
     exercises: [
         {
