@@ -1,6 +1,7 @@
 async function initWorkout() {
   const lastWorkout = await API.getLastWorkout();
   console.log("Last workout:", lastWorkout);
+  
   if (lastWorkout) {
     document
       .querySelector("a[href='/exercise?']")
@@ -43,8 +44,8 @@ function formatDate(date) {
   };
   
   // Build and format date
-  console.log("currentDate", new Date().toLocaleDateString(options));
-  return new Date(date).toLocaleDateString(options);
+  console.log("currentDate", new Date(date.replace(/-/g, '\/').replace(/T.+/, '')).toLocaleDateString(options));
+  return new Date(date.replace(/-/g, '\/').replace(/T.+/, '')).toLocaleDateString(options);
 }
 
 function renderWorkoutSummary(summary) {
