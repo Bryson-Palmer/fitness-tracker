@@ -9,7 +9,7 @@ fetch("/api/workouts/range")
     // Get response data
     console.log("data", data);
 
-    // Get the last 7 days
+    // Slice off the last 7 workouts
     let chartData = data.slice(0, 7);
     console.log("chartData", chartData.reverse());
 
@@ -302,7 +302,7 @@ function allStrengthData(chartData) {
   return strengthData;
 }
 
-// Get the current day and order the 7 day labels for the charts
+// Order the 7 workout labels for the charts
 function orderLabels(chartData) {
   let workoutLabels = [];
 
@@ -318,7 +318,7 @@ function orderLabels(chartData) {
         for (let j = 0; j < workout.exercises.length; j++) {
           workoutLabels.push(workout.exercises[j].name);
         }
-        
+
       }
 
     } else {
