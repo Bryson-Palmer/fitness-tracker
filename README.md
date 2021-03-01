@@ -32,12 +32,12 @@
   <img src="https://img.shields.io/badge/Javascript-yellow" />
   <img src="https://img.shields.io/badge/HTML-orange" />
   <img src="https://img.shields.io/badge/Boostrap-informational" />
-  <img src="https://img.shields.io/badge/-node.js-9cf" />
   <img src="https://img.shields.io/badge/-MongoDB-greenBright" >
-  <img src="https://img.shields.io/badge/-express-blueBright" >
-  <img src="https://img.shields.io/badge/-mongoose-blueBright" >
-  <img src="https://img.shields.io/badge/-morgan-blueBright" >
-  <img src="https://img.shields.io/badge/-dotenv-blueBright" >
+  <img src="https://img.shields.io/badge/-node.js-9cf" />
+  <img src="https://img.shields.io/badge/-express.js-9cf" >
+  <img src="https://img.shields.io/badge/-mongoose.js-9cf" >
+  <img src="https://img.shields.io/badge/-morgan.js-9cf" >
+  <img src="https://img.shields.io/badge/-dotenv.js-9cf" >
 </p>
 
   ## 🔗 <a id='links'></a> Links
@@ -46,7 +46,7 @@
   
 
 ## 📸 <a id='screenshot'></a> Screenshot
-![screenshot](Add a screenshot here.) </br>
+![screenshot](public/fitness-tracker-demo.gif) </br>
 
 ## 🔧 <a id='installation'></a> Installation Instructions
 * Go to https://my-fitness-chart.herokuapp.com and you can start using the app right away.
